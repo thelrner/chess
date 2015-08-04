@@ -14,17 +14,33 @@ class Board
     self.grid.each do |row|
       row.each do |piece|
         next if piece.nil?
-        return true if piece.color != color && piece.moves.include?(king_pos)
+        return true if piece.color != color && piece.moves.include?(king_pos)   #moves
       end
     end
 
     return false
   end
 
-  def move(start_pos, end_pos)
-    to_move = self[start_pos]
+  def deep_dup
+    dup_board = self.dup
+    dup_board.grid = duplicate_grid(grid)
+    dup_board
+  end
 
+  def duplicate_grid(array)
+    return nil if array.nil?
+    return array.dup if !array.is_a?(Array)
+    array.map {|subarray| duplicate_grid(subarray)}
+  end
 
+  def move!(start_pos, end_pos)
+    move_piece = self[start_pos]
+    raise "No piece to move!" if move_piece.nil?
+    raise "Can't move there!" unless move_piece.moves.include?(end_pos)
+
+    self[start_pos], self[end_pos] = nil, self[start_pos]
+    self[end_pos].update_pos(end_pos)
+    send_board_to_pieces
   end
 
   def find_king(color)

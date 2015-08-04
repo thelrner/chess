@@ -17,17 +17,30 @@ class Piece
     self.board = board
   end
 
-  def receive_new_position(pos)
+  def update_pos(pos)
     self.pos = pos
+  end
+
+  def move_into_check?(pos)
+    duped_board = board.deep_dup
+    duped_board.move!(self.pos, pos)
+
+    duped_board.in_check?(color)
+  end
+
+  def valid_moves
+    moves.select { |pos| move_into_check?(pos) == false }
   end
 
   def moves
     possible_moves.select do |pos|
-      ( position_empty?(pos) || enemy?(pos) ) && on_board?(pos)
+      position_empty?(pos) || enemy?(pos)
     end
   end
 
   def enemy?(pos)
+    #debugger if pos.any? {|coord| !coord.between?(0,7)}
+    return false if !on_board?(pos) || board[pos].nil?
     board[pos].color != color
   end
 

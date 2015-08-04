@@ -22,11 +22,13 @@ class SlidingPiece < Piece
     new_pos = pos.dup
     direction == :right ? new_pos[1] += 1 : new_pos[1] -= 1
     eligible_moves = []
+
     while on_board?(new_pos)
       if !position_empty?(new_pos)
         eligible_moves << new_pos.dup if enemy?(new_pos)
         break
       end
+
       eligible_moves << new_pos.dup
       direction == :right ? new_pos[1] += 1 : new_pos[1] -= 1
     end
@@ -55,7 +57,13 @@ class SlidingPiece < Piece
     new_pos = pos.dup
     direction == :down ? new_pos[0] += 1 : new_pos[0] -= 1
     eligible_moves = []
-    while position_empty?(new_pos) && on_board?(new_pos)
+
+    while on_board?(new_pos)
+      if !position_empty?(new_pos)
+        eligible_moves << new_pos.dup if enemy?(new_pos)
+        break
+      end
+
       eligible_moves << new_pos.dup
       direction == :down ? new_pos[0] += 1 : new_pos[0] -= 1
     end
@@ -79,14 +87,20 @@ class SlidingPiece < Piece
       new_pos = pos.dup
       dx, dy = delta
       new_pos = [new_pos[0] + dx, new_pos[1] + dy]
-      while position_empty?(new_pos) && on_board?(new_pos)
+
+      while on_board?(new_pos)
+        if !position_empty?(new_pos)
+          eligible_moves << new_pos.dup if enemy?(new_pos)
+          break
+        end
+
         eligible_moves << new_pos.dup
         new_pos = [new_pos[0] + dx, new_pos[1] + dy]
       end
     end
+
     eligible_moves
   end
-
 end
 
 class Bishop < SlidingPiece
