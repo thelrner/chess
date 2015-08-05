@@ -3,6 +3,15 @@ class Board
 
   BOARD_SIZE = 8
 
+  BLACK_PIECES = {
+    :knight => [[0, 2], [0, 5]]
+  }
+
+  # BLACK_PIECES.each do |piece, positions|
+  #   indicies.each do |pos|
+  #     case piece
+  #     when :knight then self[pos] == Knight.new(pos, self, :black)
+
   def initialize(grid = Array.new(BOARD_SIZE) {Array.new(BOARD_SIZE)} )
     @grid = grid
     populate_board

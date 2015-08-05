@@ -19,7 +19,8 @@ class King < SteppingPiece
   ]
 
   def to_s
-    "K"
+    picture = color == :white ? "\u2654" : "\u265A"
+    picture.encode('utf-8')
   end
 
 end
@@ -38,7 +39,8 @@ class Knight < SteppingPiece
   ]
 
   def to_s
-    "H"
+    picture = color == :white ? "\u2658" : "\u265E"
+    picture.encode('utf-8')
   end
 
 end
@@ -101,7 +103,8 @@ class Pawn < SteppingPiece
   end
 
   def to_s
-    "P"
+    picture = color == :white ? "\u2659" : "\u265F"
+    picture.encode('utf-8')
   end
 
 end

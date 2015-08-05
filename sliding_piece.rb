@@ -51,7 +51,8 @@ class Bishop < SlidingPiece
   end
 
   def to_s
-    "B"
+    picture = color == :white ? "\u2657" : "\u265D"
+    picture.encode('utf-8')
   end
 end
 
@@ -61,7 +62,8 @@ class Rook < SlidingPiece
   end
 
   def to_s
-    "R"
+    picture = color == :white ? "\u2656" : "\u265C"
+    picture.encode('utf-8')
   end
 end
 
@@ -71,7 +73,8 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    "Q"
+    picture = color == :white ? "\u2655" : "\u265B"
+    picture.encode('utf-8')
   end
 end
 
