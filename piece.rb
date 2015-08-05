@@ -7,14 +7,6 @@ class Piece
     @color = color
   end
 
-  def set_color(color)
-    self.color = color
-  end
-
-  def receive_new_board(board)      # figure out how to send to all pieces
-    self.board = board
-  end
-
   def update_pos(pos)
     self.pos = pos
   end
@@ -27,7 +19,7 @@ class Piece
   end
 
   def valid_moves
-    moves.select { |pos| move_into_check?(pos) == false }
+    moves.select { |pos| !move_into_check?(pos) }
   end
 
   def moves
@@ -37,17 +29,11 @@ class Piece
   end
 
   def enemy?(pos)
-    return false if !on_board?(pos) || board[pos].nil?
+    return false if position_empty?(pos)
     board[pos].color != color
   end
 
-  def on_board?(pos)
-    pos.all? { |coord| coord.between?(0, board.class::BOARD_SIZE - 1) }
-  end
-
   def position_empty?(pos)
-    return false unless on_board?(pos) # for safety
-
     board[pos].nil?
   end
 end

@@ -1,6 +1,9 @@
 class SteppingPiece < Piece
+
   def possible_moves
-    self.class::DELTAS.map { |x, y| [pos[0] + x, pos[1] + y] }
+    self.class::DELTAS.map { |x, y| [pos[0] + x, pos[1] + y] }.select do |pos|
+      Board.on_board?(pos)
+    end
   end
 
 end
@@ -45,62 +48,82 @@ class Knight < SteppingPiece
 
 end
 
-class Pawn < SteppingPiece
+class Pawn < Piece
 
-  attr_accessor :deltas, :first_move_delta
+  attr_accessor :first_move_delta, :straight_delta, :diag_delta
+  attr_reader :initial_pos
 
   def initialize(pos = [0,0], board = Board.new, color = :white)
     super
-
     @initial_pos = pos
-  end
-
-  def set_color(color)
-    super color
-
     set_deltas
   end
 
   def set_deltas
     if color == :white
-      @deltas = [[-1, 1], [-1, 0], [-1, -1]]
+      @straight_delta =  [-1, 0]
+      @diag_delta = [[-1, 1], [-1, -1]]
       @first_move_delta = [-2, 0]
     else
-      @deltas = [[1, 1], [1, 0], [1, -1]]
+      @straight_delta = [1, 0]
+      @diag_delta = [[1, 1], [1, -1]]
       @first_move_delta = [2, 0]
     end
   end
 
   def possible_moves
-    deltas.map { |x, y| [pos[0] + x, pos[1] + y] }
+    # deltas.map { |x, y| [pos[0] + x, pos[1] + y] }
   end
 
   def moves
-    possibles = possible_moves.select {|pos| on_board?(pos)}
+    # possibles = possible_moves.select {|pos| Board.on_board?(pos)}
+    #
+    # possibles.select! do |pos|
+    #   case pos
+    #   when possibles.first
+    #     enemy?(pos)
+    #   when possibles.last
+    #     enemy?(pos)
+    #   when possibles[1]
+    #     position_empty?(pos)
+    #   end
+    # end
+    #
+    # possibles << initial_move if initial_move
+    # possibles
+    straight_move + diag_move + initial_move
+    # check on_board? here
 
-    possibles.select! do |pos|
-      case pos
-      when possibles.first
-        enemy?(pos) ? true : false
-      when possibles.last
-        enemy?(pos) ? true : false
-      when possibles[1]
-        position_empty?(pos) ? true : false
-      end
+  end
+
+  def straight_move
+    new_pos = [pos[0] + straight_delta[0], pos[1]]
+    Board.on_board?(new_pos) ? [new_pos] : []
+  end
+
+  def diag_move
+    moves = []
+    diag_delta.each do |delta|
+      new_pos = [pos[0] + delta[0], pos[1] + delta[1]]
+      next unless Board.on_board?(new_pos)
+      moves << new_pos.dup if enemy?(new_pos)
     end
-
-    possibles << initial_move if initial_move
-    possibles
+    moves
   end
 
   def initial_move
-    return false if pos != @initial_pos
-
     new_pos = [pos[0] + first_move_delta[0], pos[1]]
-    return new_pos if position_empty?(new_pos)
-
-    false
+    pos == initial_pos ? [new_pos] : []
   end
+
+  # def initial_move
+  #   return false if pos != @initial_pos
+  #
+  #   new_pos = [pos[0] + first_move_delta[0], pos[1]]
+  #   return new_pos if position_empty?(new_pos)
+  #
+  #   false
+  # end
 
   def to_s
     picture = color == :white ? "\u2659" : "\u265F"

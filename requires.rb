@@ -5,7 +5,6 @@ require_relative 'sliding_piece'
 require 'byebug'
 
 b = Board.new
-b.populate_board
 
 black_queen = b[[0,3]]
 p black_queen.moves
