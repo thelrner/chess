@@ -1,5 +1,3 @@
-
-
 class Piece
   attr_accessor :pos, :board, :color
 
@@ -39,7 +37,6 @@ class Piece
   end
 
   def enemy?(pos)
-    #debugger if pos.any? {|coord| !coord.between?(0,7)}
     return false if !on_board?(pos) || board[pos].nil?
     board[pos].color != color
   end
