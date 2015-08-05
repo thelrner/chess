@@ -1,17 +1,7 @@
-
-
 class SlidingPiece < Piece
 
   DIAGS = [[1, 1], [-1, 1], [1, -1], [-1, -1]]
   STRAIGHTS = [[1, 0], [0, 1], [0, -1], [-1, 0]]
-
-
-  def possible_moves
-    moves = []
-    moves += straight_moves if move_dirs.include?(:straights)
-    moves += diag_moves if move_dirs.include?(:diags)
-    moves
-  end
 
   def straight_moves
     find_moves(STRAIGHTS)
@@ -44,8 +34,8 @@ class SlidingPiece < Piece
 end
 
 class Bishop < SlidingPiece
-  def move_dirs
-    [:diags]
+  def possible_moves
+    diag_moves
   end
 
   def to_s
@@ -55,8 +45,8 @@ class Bishop < SlidingPiece
 end
 
 class Rook < SlidingPiece
-  def move_dirs
-    [:straights]
+  def possible_moves
+    straight_moves
   end
 
   def to_s
@@ -66,8 +56,8 @@ class Rook < SlidingPiece
 end
 
 class Queen < SlidingPiece
-  def move_dirs
-    [:straights, :diags]
+  def possible_moves
+    diag_moves + straight_moves
   end
 
   def to_s

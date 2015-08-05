@@ -20,9 +20,9 @@ class Game
       puts "Current player is: #{current_color}"
       begin
         player_move = get_move
-        check_move(player_move)    # asks for move, checks if is current player's piece
+        check_move(player_move)  
         board.move(*player_move)
-      rescue StandardError => e
+      rescue ChessError => e
         puts "#{e.message}"
         retry
       end
@@ -31,8 +31,14 @@ class Game
   end
 
   def get_move
+    begin
     puts "Where do you move? ie. f2, f5"
     move = gets.chomp
+    validate_input(move)
+    rescue InputError => e
+      puts "#{e.message}"
+      retry
+    end
     move = move.split(',').map(&:strip)
     move.map {|coord| convert_to_position(coord)}
   end
@@ -44,34 +50,24 @@ class Game
 
   def check_move(move)
     start_pos = move[0]
-    raise "Not your piece" if board[start_pos].color != current_color
+    raise ChessError.new("Not your piece") if board[start_pos].color != current_color
   end
 
   def switch_player
     self.current_color = current_color == :white ? :black : :white
   end
 
+  def validate_input(input)
+    match_data = input.match(/\A[a-h][1-8], ?[a-h][1-8]\z/)
+    raise InputError.new("Invalid input") if match_data.nil?
+  end
 end
 
-# game = Game.new
-# game.board.populate_board
-# # game.play
-# game.board.render
-# white_pawn = game.board[[6,0]]
-# game.board.move([6, 0], [4, 0])
-# game.board.render
-# p white_pawn.possible_moves
-# game.board.move([4, 0], [3, 0])
-
-
+class InputError < StandardError
+end
 
 if __FILE__ == $PROGRAM_NAME
   game = Game.new
   game.board.populate_board
   game.play
-  # game.board.render
-  # game.board.move([6, 0], [4, 0])
-  # game.board.render
-  # game.board.move([4, 0], [3, 0])
-  # game.board.render
 end

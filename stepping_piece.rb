@@ -71,29 +71,8 @@ class Pawn < Piece
     end
   end
 
-  def possible_moves
-    # deltas.map { |x, y| [pos[0] + x, pos[1] + y] }
-  end
-
   def moves
-    # possibles = possible_moves.select {|pos| Board.on_board?(pos)}
-    #
-    # possibles.select! do |pos|
-    #   case pos
-    #   when possibles.first
-    #     enemy?(pos)
-    #   when possibles.last
-    #     enemy?(pos)
-    #   when possibles[1]
-    #     position_empty?(pos)
-    #   end
-    # end
-    #
-    # possibles << initial_move if initial_move
-    # possibles
     straight_move + diag_move + initial_move
-    # check on_board? here
-
   end
 
   def straight_move
@@ -115,15 +94,6 @@ class Pawn < Piece
     new_pos = [pos[0] + first_move_delta[0], pos[1]]
     pos == initial_pos ? [new_pos] : []
   end
-
-  # def initial_move
-  #   return false if pos != @initial_pos
-  #
-  #   new_pos = [pos[0] + first_move_delta[0], pos[1]]
-  #   return new_pos if position_empty?(new_pos)
-  #
-  #   false
-  # end
 
   def to_s
     picture = color == :white ? "\u2659" : "\u265F"

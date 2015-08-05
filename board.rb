@@ -52,19 +52,15 @@ class Board
   def move(start_pos, end_pos)    #safe
     move_piece = self[start_pos]
 
-    raise "No piece to move!" if move_piece.nil?
-    raise "Can't move there!" unless move_piece.moves.include?(end_pos)
-    raise "Puts you into check!" if move_piece.move_into_check?(end_pos)
+    raise ChessError.new("No piece to move!") if move_piece.nil?
+    raise ChessError.new("Can't move there!") unless move_piece.moves.include?(end_pos)
+    raise ChessError.new("Puts you into check!") if move_piece.move_into_check?(end_pos)
 
-    self[start_pos], self[end_pos] = nil, self[start_pos]
-    self[end_pos].update_pos(end_pos)
+    move!(start_pos, end_pos)
   end
 
   def move!(start_pos, end_pos)     # unsafe
     move_piece = self[start_pos]
-
-    raise "No piece to move!" if move_piece.nil?
-    raise "Can't move there!" unless move_piece.moves.include?(end_pos)
 
     self[start_pos], self[end_pos] = nil, self[start_pos]
     self[end_pos].update_pos(end_pos)
@@ -90,22 +86,13 @@ class Board
     dup_board = Board.new
 
     pieces.each do |piece|
-      # dup_board[[piece.pos]] = Piece.new(piece.pos, dup_board, piece.color)
       dup_piece = piece.dup
       dup_piece.board = dup_board
       dup_board[piece.pos] = dup_piece
-
     end
 
     dup_board
-
   end
-
-  # def duplicate_grid(grid)
-  #   return nil if grid.nil?
-  #   return grid.dup if !grid.is_a?(Array)
-  #   grid.map {|subgrid| duplicate_grid(subgrid)}
-  # end
 
   def over?
     checkmate?(:white) || checkmate?(:black)
@@ -145,11 +132,12 @@ class Board
     self.grid[x][y] = mark
   end
 
-
   private
 
   def pieces
     grid.flatten.compact
   end
+end
 
+class ChessError < StandardError
 end
