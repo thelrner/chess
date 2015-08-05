@@ -52,6 +52,8 @@ class Board
   def move(start_pos, end_pos)    #safe
     move_piece = self[start_pos]
 
+    debugger if move_piece.move_into_check?(end_pos)
+
     raise ChessError.new("No piece to move!") if move_piece.nil?
     raise ChessError.new("Can't move there!") unless move_piece.moves.include?(end_pos)
     raise ChessError.new("Puts you into check!") if move_piece.move_into_check?(end_pos)
@@ -74,6 +76,10 @@ class Board
     end
 
     return false
+  end
+
+  def move_into_check?(start_pos, end_pos)
+    self[start_pos].move_into_check?(end_pos)
   end
 
   def find_king(color)
@@ -131,8 +137,6 @@ class Board
     x, y = pos[0], pos[1]
     self.grid[x][y] = mark
   end
-
-  private
 
   def pieces
     grid.flatten.compact

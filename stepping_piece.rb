@@ -72,12 +72,14 @@ class Pawn < Piece
   end
 
   def moves
-    straight_move + diag_move + initial_move
+    moves = straight_move + diag_move + initial_move
+    moves.select {|move| position_empty?(move) || enemy?(move)}
   end
 
   def straight_move
     new_pos = [pos[0] + straight_delta[0], pos[1]]
-    Board.on_board?(new_pos) ? [new_pos] : []
+    return [] unless Board.on_board?(new_pos) && position_empty?(new_pos)
+    [new_pos]
   end
 
   def diag_move
@@ -92,7 +94,8 @@ class Pawn < Piece
 
   def initial_move
     new_pos = [pos[0] + first_move_delta[0], pos[1]]
-    pos == initial_pos ? [new_pos] : []
+    return [] unless pos == initial_pos && position_empty?(new_pos)
+    [new_pos]
   end
 
   def to_s
