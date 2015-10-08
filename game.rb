@@ -1,7 +1,5 @@
 require_relative 'board'
-require_relative 'piece'
-require_relative 'stepping_piece'
-require_relative 'sliding_piece'
+require_relative 'pieces'
 require_relative 'player'
 require 'byebug'
 
@@ -11,7 +9,7 @@ class Game
   attr_reader :player1, :player2
 
   def initialize(board = Board.new,
-    player1 = ComputerPlayer.new(:white, board),
+    player1 = HumanPlayer.new(:white, board),
     player2 = ComputerPlayer.new(:black, board))
     @board = board
     @player1 = player1
@@ -53,6 +51,5 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   game = Game.new
-  game.board.populate_board
   game.play
 end

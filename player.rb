@@ -8,7 +8,7 @@ class HumanPlayer
 
   def get_move
     begin
-    puts "Where do you move? ie. f2, f5"
+    puts "Where do you move? ie. f2, f4"
     move = gets.chomp
     validate_input(move)
 
