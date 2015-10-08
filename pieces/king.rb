@@ -1,4 +1,6 @@
-class King < SteppingPiece
+class King < Piece
+  include Steppable
+
   DELTAS = [
     [1, 1],
     [1, 0],

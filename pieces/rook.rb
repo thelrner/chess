@@ -1,4 +1,6 @@
-class Rook < SlidingPiece
+class Rook < Piece
+  include Slideable
+  
   def possible_moves
     straight_moves
   end

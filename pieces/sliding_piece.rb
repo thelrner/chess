@@ -1,4 +1,4 @@
-class SlidingPiece < Piece
+module Slideable
   DIAGS = [[1, 1], [-1, 1], [1, -1], [-1, -1]]
   STRAIGHTS = [[1, 0], [0, 1], [0, -1], [-1, 0]]
 

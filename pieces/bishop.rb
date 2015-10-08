@@ -1,4 +1,6 @@
-class Bishop < SlidingPiece
+class Bishop < Piece
+  include Slideable
+  
   def possible_moves
     diag_moves
   end
