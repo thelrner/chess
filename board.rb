@@ -118,6 +118,7 @@ class Board
   end
 
   def render
+    system("clear")
     puts "  " + ("a".."h").to_a.join(" ")
     left_index = 8
 

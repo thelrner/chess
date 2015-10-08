@@ -1,6 +1,7 @@
 require_relative 'board'
 require_relative 'pieces'
-require_relative 'player'
+require_relative 'computer_player'
+require_relative 'human_player'
 require 'byebug'
 
 class Game
@@ -11,6 +12,7 @@ class Game
   def initialize(board = Board.new,
     player1 = HumanPlayer.new(:white, board),
     player2 = ComputerPlayer.new(:black, board))
+    ARGV.clear
     @board = board
     @player1 = player1
     @player2 = player2
@@ -50,6 +52,20 @@ class InputError < StandardError
 end
 
 if __FILE__ == $PROGRAM_NAME
-  game = Game.new
+  board = Board.new
+
+  case ARGV[0]
+  when '0'
+    player1 = ComputerPlayer.new(:white, board)
+    player2 = ComputerPlayer.new(:black, board)
+  when '1'
+    player1 = HumanPlayer.new(:white, board)
+    player2 = ComputerPlayer.new(:black, board)
+  when '2'
+    player1 = HumanPlayer.new(:white, board)
+    player2 = HumanPlayer.new(:black, board)
+  end
+
+  game = Game.new(board, player1, player2)
   game.play
 end
