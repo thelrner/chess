@@ -38,7 +38,7 @@ class Game
   end
 
   def check_move(move)
-    start_pos = move[0]       # player move fed in as 2D array, length 2
+    start_pos = move[0]
     raise ChessError.new("Not your piece") if board[start_pos].color != current_player.color
   end
 

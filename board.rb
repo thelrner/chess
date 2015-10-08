@@ -49,7 +49,7 @@ class Board
     end
   end
 
-  def move(start_pos, end_pos)    #safe
+  def move(start_pos, end_pos)
     move_piece = self[start_pos]
 
     debugger if move_piece.move_into_check?(end_pos)
@@ -61,7 +61,7 @@ class Board
     move!(start_pos, end_pos)
   end
 
-  def move!(start_pos, end_pos)     # unsafe
+  def move!(start_pos, end_pos)
     move_piece = self[start_pos]
 
     self[start_pos], self[end_pos] = nil, self[start_pos]
