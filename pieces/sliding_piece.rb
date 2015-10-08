@@ -1,5 +1,4 @@
 class SlidingPiece < Piece
-
   DIAGS = [[1, 1], [-1, 1], [1, -1], [-1, -1]]
   STRAIGHTS = [[1, 0], [0, 1], [0, -1], [-1, 0]]
 
@@ -30,38 +29,5 @@ class SlidingPiece < Piece
     end
 
     eligible_moves
-  end
-end
-
-class Bishop < SlidingPiece
-  def possible_moves
-    diag_moves
-  end
-
-  def to_s
-    picture = color == :white ? "\u2657" : "\u265D"
-    picture.encode('utf-8')
-  end
-end
-
-class Rook < SlidingPiece
-  def possible_moves
-    straight_moves
-  end
-
-  def to_s
-    picture = color == :white ? "\u2656" : "\u265C"
-    picture.encode('utf-8')
-  end
-end
-
-class Queen < SlidingPiece
-  def possible_moves
-    diag_moves + straight_moves
-  end
-
-  def to_s
-    picture = color == :white ? "\u2655" : "\u265B"
-    picture.encode('utf-8')
   end
 end
